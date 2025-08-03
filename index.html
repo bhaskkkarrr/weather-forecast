@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Weather Dashboard</title>
+  </head>
+  <body>
+    <div
+          id="loader"
+          class="position-fixed hide top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
+          style="z-index: 9999; display: none !important"
+        >
+          <div
+            class="spinner-border text-primary"
+            role="status"
+            style="width: 3rem; height: 3rem"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    <main class="container-fluid ms-0 me-0 pt-3 mb-3">
+      <div class="row">
+        
+
+        <!-- Top Panel -->
+        <div class="d-flex justify-content-end p-3 pt-0">
+          <!-- Search -->
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control light-theme-bg border-0 rounded-4"
+              placeholder="Search for City..."
+              id="search-text"
+            />
+          </div>
+          <div id="light">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="scale-box light-theme-bg d-flex justify-content-center align-items-center m-2 fw-bold fs-4 rounded-5 p-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+              />
+            </svg>
+          </div>
+          <div
+            class="scale-box selected-temp d-flex light-theme-bg justify-content-center align-items-center m-2 fw-bold fs-4 rounded-5 p-2"
+            id="cel"
+          >
+            &deg;C
+          </div>
+          <div
+            class="scale-box d-flex light-theme-bg justify-content-center align-items-center m-2 fw-bold fs-4 rounded-5 p-2"
+            id="feh"
+          >
+            &deg;F
+          </div>
+          <div
+            class="d-flex light-theme-bg justify-content-center align-items-center m-2 rounded"
+          >
+            <img
+              src="images/profile_pic.jpg"
+              class="user rounded object-fit-cover"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <!-- Left Panel -->
+        <div class="container col-12 col-sm-10 col-md-4">
+          <div class="today-weather rounded h-100 left-section">
+            <!-- Weather Icon -->
+            <div class="d-flex justify-content-center">
+              <img
+                id="weather-icon-big"
+                src="images/cloudy.png"
+                class="w-50"
+                alt="weather-icon"
+              />
+            </div>
+
+            <!-- Temperature -->
+            <div
+              class="d-flex align-items-start light-theme-text justify-content-start"
+              id="temp-text"
+            >
+              <div class="celsius" id="todayTemp">12.0</div>
+              <!-- <div class="d-flex flex-xl-shrink-1 flex-row"> -->
+              <div class="degree">&deg;</div>
+              <div class="fs-1 pt-4">C</div>
+              <!-- </div> -->
+            </div>
+
+            <!-- Day and Time -->
+            <div class="d-flex light-theme-text gap-3 fs-4 flex-wrap">
+              <div class="fs-1 fw-bold day" id="dayName">Monday</div>
+              <div class="fs-1 fw-bold">,</div>
+              <div class="fs-1 time fw-bold" id="todayDate">12/05/25</div>
+            </div>
+
+            <!-- Weather Details -->
+            <div class="d-flex flex-column gap-4 light-theme-text">
+              <div class="d-flex align-items-center gap-4">
+                <img
+                  src="images/clouds.png"
+                  class="img-fluid"
+                  id="weather-des-icon"
+                  alt="clouds"
+                  style="width: 35px"
+                />
+                <span class="fs-5" id="temp-description">Mostly Cloudy</span>
+              </div>
+            </div>
+
+            <!-- City Name Background -->
+            <div
+              class="position-relative rounded overflow-hidden temp-city mt-3"
+              style="height: 20vmin"
+            >
+              <div
+                class="bg-dark bg-opacity-50 w-100 h-100 d-flex align-items-center justify-content-center city-name"
+              >
+                <p class="text-white fw-bold fs-5 m-0" id="city-name-banner">Weather Forecast Dashboard</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="mt-3 col-12 col-md-8">
+          <!-- Day-Wise Temperature -->
+          <div
+            class="gap-3 ps-md-3 row justify-content-center justify-content-md-start"
+          >
+            <!-- Sunday -->
+            <div
+              class="days-box text-center light-theme-bg shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Sun</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Monday -->
+            <div
+              class="days-box text-center light-theme-bg shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Mon</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tuesday -->
+            <div
+              class="days-box light-theme-bg text-center shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Tue</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div
+              class="days-box text-center light-theme-bg shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Wed</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Thursday -->
+            <div
+              class="days-box light-theme-bg text-center shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Thu</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Friday -->
+            <div
+              class="days-box text-center light-theme-bg shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Fri</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Saturday -->
+            <div
+              class="days-box light-theme-bg text-center shadow col-5 col-sm-3 col-md-2 p-4"
+            >
+              <div
+                class="d-flex justify-content-between flex-column align-items-center"
+              >
+                <div class="fw-bold fs-6 days-name">Sat</div>
+                <img
+                  src="images/cloudy.png"
+                  class="img-fluid p-0 forecast-icon"
+                  alt=""
+                />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="fw-bold fs-6 celsius forecast-max-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">/</div>
+                  <div class="fw-bold fs-6 celsius forecast-min-temps">
+                    18.0
+                  </div>
+                  <div class="fw-bold fs-6">&deg;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div
+            class="ps-md-3 d-flex gap-4 flex-column justify-content-center align-items-start"
+          >
+            <!-- Heading -->
+            <div class="pt-4 fw-bold light-theme-text fs-4">
+              Today's Highlight
+            </div>
+
+            <!-- Information Container -->
+            <div class="row gap-4 ps-2 pe-2 p-md-0">
+              <!-- UV Index -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-md-3 col-12"
+              >
+                <div class="fs-6">UV Index</div>
+                <div class="fs-1 fw-bold" id="uv-idx">5</div>
+              </div>
+
+              <!-- Wind Status -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-12 col-md-3"
+              >
+                <div class="fs-6">Wind Status</div>
+                <div class="fs-1 fw-bold" id="wind-speed">7.70 m/s</div>
+              </div>
+
+              <!-- Sunrise & Sunset -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-12 col-md-3"
+              >
+                <div class="fs-6">Sunrise & Sunset</div>
+
+                <div class="rise-set d-flex flex-column gap-2">
+                  <!-- Sunrise -->
+                  <div class="d-flex flex-row gap-3 fs-5 align-items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="sun-set light-theme-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+                      />
+                    </svg>
+                    <div class="d-flex flex-row gap-1">
+                      <div class="sun-time fw-bold" id="sunrise-time">6:35</div>
+                    </div>
+                  </div>
+
+                  <!-- Sunset -->
+                  <div class="d-flex flex-row gap-3 fs-5 align-items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="sun-set light-theme-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+                      />
+                    </svg>
+                    <div class="d-flex flex-row gap-1">
+                      <div class="sun-time fw-bold" id="sunset-time">5:52</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Humidity -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-12 col-md-3"
+              >
+                <div class="fs-6">Humidity</div>
+                <div class="fs-1 fw-bold" id="humidity">12%</div>
+                <!-- <div class="fs-6">Normal</div> -->
+              </div>
+
+              <!-- Visibility -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-12 col-md-3"
+              >
+                <div class="fs-6">Visibility</div>
+                <div class="fs-1 fw-bold" id="visibility">5.2 Km</div>
+                <!-- <div class="fs-6">Average</div> -->
+              </div>
+
+              <!-- AQI -->
+              <div
+                class="highlight-boxes p-3 light-theme-bg shadow col-12 col-md-3"
+              >
+                <div class="fs-6">Air Quality</div>
+                <div class="fs-1 fw-bold" id="aqiIdx">105</div>
+                <div class="fs-6" id="aqiVal">Unhealthy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- JS Scripts -->
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
