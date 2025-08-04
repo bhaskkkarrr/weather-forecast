@@ -1,5 +1,3 @@
-const apiKey = "8d762746f485c9568b72b1c62d9589e4";
-const forecastApiKey = "91b8db2a8e08486e868134037250408";
 const lightBtn = document.querySelector("#light");
 const lightModeBg = document.querySelectorAll(".light-theme-bg");
 const lightModeText = document.querySelectorAll(".light-theme-text");
@@ -216,23 +214,27 @@ const fetchWeather = async (lat, lon) => {
 const fetchByCity = async (cityName) => {
   showLoader();
   try {
-    const cityRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
+    const cityRes = await fetch(`/.netlify/functions/getCityCoordinates?city=${cityName}`);
     const cityData = await cityRes.json();
-    const cityLat = cityData.coord.lat;
-    const cityLon = cityData.coord.lon;
-    await fetchWeather(cityLat, cityLon);
-    
-    // City Name on Banner
-    cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
-    // console.log(cityName);
-    document.querySelector("#city-name-banner").innerText = cityName;
 
+    if (!cityRes.ok || !cityData.lat || !cityData.lon) {
+      throw new Error(cityData.error || "Invalid city");
+    }
+
+    const cityLat = cityData.lat;
+    const cityLon = cityData.lon;
+
+    await fetchWeather(cityLat, cityLon);
+
+    document.querySelector("#city-name-banner").innerText = cityData.city;
   } catch (err) {
     console.error("City fetch failed:", err.message);
+    alert("City not found. Please try again.");
   } finally {
     hideLoader();
   }
 };
+
 
 // Search by City
 searchBar.addEventListener("keypress", (e) => {
