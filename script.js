@@ -1,5 +1,5 @@
-const apiKey = "57aebc7d60faa19204b4c90a72363fa2";
-const forecastApiKey = "96447bc221ec465abfb102755250308";
+const apiKey = "8d762746f485c9568b72b1c62d9589e4";
+const forecastApiKey = "91b8db2a8e08486e868134037250408";
 const lightBtn = document.querySelector("#light");
 const lightModeBg = document.querySelectorAll(".light-theme-bg");
 const lightModeText = document.querySelectorAll(".light-theme-text");
@@ -140,8 +140,7 @@ const fetchWeather = async (lat, lon) => {
     // Fetching Main API for every detail
     let mainLat = lat;
     let mainLon = lon;
-    const URL = `https://api.weatherapi.com/v1/forecast.json?key=${forecastApiKey}&q=${mainLat},${mainLon}&days=7`
-    const res = await fetch(URL);
+    const res = await fetch(`/.netlify/functions/getForecast?lat=${mainLat}&lon=${mainLon}`);
     const data = await res.json();
 
     // Today's Temperature
@@ -175,8 +174,7 @@ const fetchWeather = async (lat, lon) => {
       data.forecast.forecastday[0].astro.sunset;
 
     // AQI
-    const aqiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${mainLat}&lon=${mainLon}&appid=${apiKey}`;
-    const aqiRes = await fetch(aqiUrl);
+    const aqiRes = await fetch(`/.netlify/functions/getAqi?lat=${mainLat}&lon=${mainLon}`);
     const aqiData = await aqiRes.json();
     const aqiVal = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
     document.querySelector("#aqiIdx").innerText = aqiData.list[0].main.aqi;
