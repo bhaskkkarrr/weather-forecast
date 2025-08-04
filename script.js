@@ -1,5 +1,3 @@
-const apiKey = "8d762746f485c9568b72b1c62d9589e4";
-const forecastApiKey = "91b8db2a8e08486e868134037250408";
 const lightBtn = document.querySelector("#light");
 const lightModeBg = document.querySelectorAll(".light-theme-bg");
 const lightModeText = document.querySelectorAll(".light-theme-text");
